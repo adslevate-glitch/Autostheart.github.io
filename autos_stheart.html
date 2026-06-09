@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autos STHEART – Compra, Venta y Consignación</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #0A0A0A;
+    --carbon:  #141414;
+    --panel:   #1C1C1C;
+    --gold:    #C9922A;
+    --orange:  #E8741A;
+    --white:   #F5F5F5;
+    --muted:   #888888;
+    --border:  rgba(201,146,42,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.98) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(201,146,42,0.12);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo-mark {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    clip-path: polygon(50% 0%, 95% 20%, 100% 65%, 50% 100%, 0% 65%, 5% 20%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 18px; color: var(--black);
+    letter-spacing: 1px;
+  }
+
+  .nav-brand {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 22px; letter-spacing: 3px;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    color: var(--black) !important;
+    padding: 10px 22px; border-radius: 3px;
+    font-weight: 700 !important; letter-spacing: 1px !important;
+    -webkit-text-fill-color: var(--black) !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Radial glow — the signature element */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse at center,
+      rgba(232,116,26,0.18) 0%,
+      rgba(201,146,42,0.10) 30%,
+      transparent 70%);
+    pointer-events: none;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    background: linear-gradient(to top, var(--black), transparent);
+    pointer-events: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50%       { opacity: 0.7; transform: translate(-50%, -50%) scale(1.08); }
+  }
+
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 24px;
+    border: 1px solid var(--border);
+    padding: 6px 18px; border-radius: 2px;
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(64px, 12vw, 140px);
+    line-height: 0.92;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 60%, #fff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(28px, 5vw, 56px);
+    letter-spacing: 8px; color: rgba(245,245,245,0.35);
+    margin-bottom: 32px;
+  }
+
+  .hero-desc {
+    font-size: 17px; color: var(--muted); max-width: 520px;
+    line-height: 1.7; margin-bottom: 48px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    color: var(--black); font-weight: 700; font-size: 14px;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 16px 36px; border-radius: 3px;
+    text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--gold); font-weight: 600; font-size: 14px;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 16px 36px; border-radius: 3px;
+    text-decoration: none; transition: background 0.2s, transform 0.2s;
+    background: transparent;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { background: rgba(201,146,42,0.08); transform: translateY(-1px); }
+
+  .hero-stats {
+    position: relative; z-index: 2;
+    display: flex; gap: 48px; margin-top: 72px;
+    flex-wrap: wrap; justify-content: center;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 48px; line-height: 1;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--muted); margin-top: 4px;
+  }
+
+  .stat-divider {
+    width: 1px; background: var(--border);
+    align-self: stretch;
+  }
+
+  /* ── SERVICES ── */
+  .section {
+    padding: 96px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(36px, 5vw, 60px); letter-spacing: 3px;
+    margin-bottom: 56px; line-height: 1;
+  }
+
+  .section-title em {
+    font-style: normal;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+
+  .service-card {
+    background: var(--carbon);
+    padding: 40px 36px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative; overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { background: #1e1e1e; }
+
+  .service-icon {
+    font-size: 36px; margin-bottom: 20px; display: block;
+  }
+
+  .service-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 26px; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 12px;
+  }
+
+  .service-desc {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+  }
+
+  /* ── INVENTORY ── */
+  .inventory-section {
+    background: var(--carbon);
+    padding: 96px 0;
+  }
+
+  .inventory-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 48px;
+  }
+
+  .cars-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    margin-top: 56px;
+  }
+
+  .car-card {
+    background: var(--panel);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .car-card:hover { transform: translateY(-4px); }
+
+  .car-img-wrap {
+    aspect-ratio: 4/3; overflow: hidden;
+    background: #222;
+    position: relative;
+  }
+
+  .car-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    filter: brightness(0.88);
+  }
+  .car-card:hover .car-img-wrap img {
+    transform: scale(1.04);
+    filter: brightness(1);
+  }
+
+  .car-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    color: var(--black); font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 2px;
+  }
+
+  .car-info { padding: 20px 22px; }
+
+  .car-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px; letter-spacing: 1.5px; margin-bottom: 4px;
+  }
+
+  .car-meta {
+    font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  .car-line {
+    height: 1px; background: var(--border); margin: 12px 0;
+  }
+
+  .car-cta {
+    font-size: 12px; color: var(--gold);
+    font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .car-cta::after { content: '→'; transition: transform 0.2s; }
+  .car-card:hover .car-cta::after { transform: translateX(4px); }
+
+  /* ── WHY ── */
+  .why-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+    margin-top: 56px;
+  }
+
+  .why-item {
+    background: var(--carbon);
+    padding: 44px 40px;
+    display: flex; gap: 24px; align-items: flex-start;
+  }
+
+  .why-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 48px; line-height: 1;
+    color: var(--border);
+    flex-shrink: 0;
+    width: 52px;
+  }
+
+  .why-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 22px; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 10px;
+  }
+
+  .why-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, #1a1200 0%, #0e0900 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(201,146,42,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(36px, 5vw, 64px); letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .cta-sub { font-size: 16px; color: var(--muted); margin-bottom: 40px; }
+
+  .contact-chips {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  }
+
+  .chip {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 14px 28px; border-radius: 3px;
+    color: var(--white); font-size: 15px; font-weight: 600;
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .chip:hover { border-color: var(--gold); background: rgba(201,146,42,0.07); }
+
+  .chip-icon { font-size: 20px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080808; padding: 40px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap; gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 18px; letter-spacing: 4px;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .footer-copy {
+    font-size: 12px; color: var(--muted); letter-spacing: 1px;
+  }
+
+  /* ── DIVIDER LINE ── */
+  .gold-line {
+    width: 48px; height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--orange));
+    margin-bottom: 24px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .section { padding: 64px 20px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .cars-grid { grid-template-columns: repeat(2, 1fr); }
+    .why-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    .stat-divider { display: none; }
+    footer { flex-direction: column; text-align: center; }
+    .cta-banner { padding: 60px 20px; }
+    .inventory-inner { padding: 0 20px; }
+  }
+
+  @media (max-width: 520px) {
+    .cars-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">ST</div>
+    <span class="nav-brand">Autos STHEART</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#inventario">Inventario</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto" class="nav-cta">Contáctenos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">Costa Rica · Compra · Venta · Consignación</span>
+  <h1 class="hero-title">
+    <span>AUTOS</span>
+    <span>STHEART</span>
+  </h1>
+  <p class="hero-sub">El Auto Ideal Te Espera</p>
+  <p class="hero-desc">
+    Confianza, seguridad y el vehículo perfecto para vos. Consulte sin ningún compromiso y encuentre su próxima inversión con asesoría real.
+  </p>
+  <div class="hero-actions">
+    <a href="#inventario" class="btn-primary">Ver Inventario</a>
+    <a href="#contacto" class="btn-ghost">Consignar mi Auto</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Vehículos disponibles</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Trámites seguros</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Compromiso al consultar</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<div id="servicios">
+<div class="section">
+  <div class="section-eyebrow">Lo que ofrecemos</div>
+  <div class="gold-line"></div>
+  <h2 class="section-title">NUESTROS <em>SERVICIOS</em></h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🚗</span>
+      <div class="service-title">Compra de Vehículos</div>
+      <p class="service-desc">¿Necesita vender su carro rápido? Le hacemos una oferta justa, sin trámites complicados y con pago seguro directo.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏷️</span>
+      <div class="service-title">Venta de Autos</div>
+      <p class="service-desc">Inventario variado de sedanes, SUVs y pickups. Todos inspeccionados y con historial. Financiamiento disponible con entidades aliadas.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🤝</span>
+      <div class="service-title">Consignación</div>
+      <p class="service-desc">Deje su vehículo en nuestras manos. Lo publicamos, atendemos interesados y cerramos la venta por usted, sin que tenga que preocuparse de nada.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- INVENTORY -->
+<section id="inventario" class="inventory-section">
+  <div class="inventory-inner">
+    <div class="section-eyebrow">Disponibles ahora</div>
+    <div class="gold-line"></div>
+    <h2 class="section-title">INVENTARIO <em>ACTUAL</em></h2>
+    <div class="cars-grid">
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#222,#111);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🚙</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Toyota Prado</div>
+          <div class="car-meta">SUV · 4×4 · Blanco</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#1a1a1a,#111);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🛻</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Mitsubishi Montero</div>
+          <div class="car-meta">Pickup · 4×4 · Gris</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#1c1c1c,#0f0f0f);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🚗</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">BMW Serie 3</div>
+          <div class="car-meta">Sedán · Blanco · Lujo</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#181818,#0d0d0d);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🏎️</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Mitsubishi L200</div>
+          <div class="car-meta">Pickup · 4×4 · Blanco</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#202020,#121212);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🚙</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Hyundai Santa Fe</div>
+          <div class="car-meta">SUV · Blanco perla</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#191919,#0e0e0e);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🚗</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Nissan Tiida</div>
+          <div class="car-meta">Sedán · Plata · Económico</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#1b1b1b,#101010);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🛻</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Ford Ranger</div>
+          <div class="car-meta">Pickup · Blanco · 4×4</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+      <div class="car-card">
+        <div class="car-img-wrap">
+          <div style="background:linear-gradient(135deg,#1d1d1d,#0c0c0c);width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#555;font-size:40px;">🚗</div>
+          <span class="car-badge">Disponible</span>
+        </div>
+        <div class="car-info">
+          <div class="car-name">Honda Civic</div>
+          <div class="car-meta">Sedán · Negro · Sport</div>
+          <div class="car-line"></div>
+          <div class="car-cta">Consultar precio</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a href="#contacto" class="btn-ghost">Ver todos los vehículos →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<div id="nosotros">
+<div class="section">
+  <div class="section-eyebrow">¿Por qué elegirnos?</div>
+  <div class="gold-line"></div>
+  <h2 class="section-title">CONFIANZA Y <em>SEGURIDAD</em></h2>
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-num">01</div>
+      <div>
+        <div class="why-title">Atención Personalizada</div>
+        <p class="why-desc">No somos un lote de carros impersonal. Cada cliente recibe asesoría directa y honesta, sin presión y sin letra chica.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">02</div>
+      <div>
+        <div class="why-title">Trámites Seguros</div>
+        <p class="why-desc">Acompañamos cada proceso de compra o venta con toda la documentación en orden, protegiendo tanto al vendedor como al comprador.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">03</div>
+      <div>
+        <div class="why-title">Consignación Sin Estrés</div>
+        <p class="why-desc">Usted entrega las llaves y nosotros hacemos todo el trabajo. Sin compromisos de exclusividad abusivos ni comisiones ocultas.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-num">04</div>
+      <div>
+        <div class="why-title">Variedad de Inventario</div>
+        <p class="why-desc">Desde sedanes económicos hasta pickups 4x4 y vehículos de lujo. Siempre con nuevas opciones para todo presupuesto.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CTA BANNER -->
+<section id="contacto" class="cta-banner">
+  <h2 class="cta-title">PREGUNTE SIN NINGÚN COMPROMISO</h2>
+  <p class="cta-sub">Estamos disponibles para resolver sus dudas y encontrar el vehículo ideal para usted.</p>
+  <div class="contact-chips">
+    <a href="https://wa.me/50663105259" class="chip">
+      <span class="chip-icon">💬</span> 6310-5259
+    </a>
+    <a href="https://wa.me/50660288906" class="chip">
+      <span class="chip-icon">💬</span> 6028-8906
+    </a>
+    <a href="https://www.instagram.com/autos_stheart" target="_blank" class="chip">
+      <span class="chip-icon">📸</span> @autos_stheart
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">AUTOS STHEART</span>
+  <span class="footer-copy">Costa Rica · Compra, Venta y Consignación de Vehículos · 2025</span>
+</footer>
+
+</body>
+</html>
